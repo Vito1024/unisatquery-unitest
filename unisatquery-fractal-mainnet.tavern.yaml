@@ -1,0 +1,148 @@
+# unisatquery-fractal-mainnet.tavern.yaml
+test_name: "Unisatquery Fractal Mainnet"
+
+includes:
+  - name: variables
+    description: variables
+    variables:
+      base_url: "http://host.docker.internal:6080"
+      address: bc1q0s4kkddahjrhzt0n6pshc23m6kstetqyz68m06
+
+stages:
+  - name: "Address Utxo Data"
+    request:
+      url: "{base_url}/address/{address}/utxo-data"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        code: 0
+        msg: "ok"
+        data:
+          total: 5
+          totalConfirmed: 5
+          totalUnconfirmed: 0
+          totalUnconfirmedSpend: 0
+          totalRunes: 2
+      strict: false
+
+  - name: "Address Balance"
+    request:
+      url: "{base_url}/address/{address}/unsigned-balance"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        code: 0
+        msg: "ok"
+        data:
+          satoshi: 9242150
+          pendingSatoshi: 0
+          utxoCount: 17
+          btcSatoshi: 9236606
+          btcPendingSatoshi: 0
+          btcUtxoCount: 5
+          inscriptionSatoshi: 5544
+          inscriptionPendingSatoshi: 0
+          inscriptionUtxoCount: 12
+      strict: false
+
+stages: # brc20
+
+  - name: "brc20 summary"
+    request:
+      url: "{base_url}/address/{address}/brc20/summary"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        code: 0
+        msg: "ok"
+        data:
+          height: 175079
+          total: 2
+      strict: false
+
+  - name: "brc20 events"
+    request:
+      url: "{base_url}/inscription/brc20-events"
+      method: "GET"
+      params:
+        start: 0
+        end: 100000
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        code: 0
+        msg: "ok"
+        data:
+          total: 278606544
+      strict: false
+
+
+stages: # Inscription
+  - name: "Inscriptions Summary By Height Range"
+    request:
+      url: "{base_url}/inscriptions-summary"
+      method: "GET"
+      params:
+        start: 0
+        end: 200000
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        code: 0
+        msg: "ok"
+        data:
+          total: 171462306
+      strict: false
+
+stages:
+  - name: "Inscription By Address"
+    request:
+      url: "{base_url}/address/{address}/inscription-data"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        code: 0
+        msg: "ok"
+        data:
+          total: 12
+          totalConfirmed: 12
+          totalUnconfirmed: 0
+          totalUnconfirmedSpend: 0
+      strict: false
+
+stages: # Names Summary
+  - name: "Names Summary"
+    request:
+      url: "{base_url}/address/{address}/names-summary"
+      method: "GET"
+      headers:
+        Content-Type: "application/json"
+    response:
+      status_code: 200
+      json:
+        code: 0
+        msg: "ok"
+        data:
+          - CategoryIdx: 0
+            category: fb
+            count: 3
+          - CategoryIdx: 1
+            category: infinityai
+            count: 0
+      strict: false
